@@ -9,7 +9,6 @@ namespace OpenMovieService.Infrastructure.Services
 {
     public interface IOMDbService
     {
-        void PopulateRequestHeader();
         Task<Movie> GetMovieById(string id);
         Task<Movie> GetMovieByTitle(string name);
     }

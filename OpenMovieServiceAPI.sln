@@ -15,6 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMovieService.Infrastruc
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMovieService.Shared", "OpenMovieService.Shared\OpenMovieService.Shared.csproj", "{FDDFC030-8FF3-41EF-B120-BC216DBB0759}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39902B16-EA49-4F84-B678-44D2C95C2B18} = {39902B16-EA49-4F84-B678-44D2C95C2B18}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMDbConsoleApp", "OMDbConsoleApp\OMDbConsoleApp.csproj", "{AC63325F-4991-467A-A714-86AAB0C9E216}"
 EndProject
