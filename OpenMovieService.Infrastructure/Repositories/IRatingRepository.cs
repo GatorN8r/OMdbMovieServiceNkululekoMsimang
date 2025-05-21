@@ -8,7 +8,7 @@ namespace OpenMovieService.Infrastructure.Repositories
 {
     public interface IRatingRepository
     {
-        Task<ServiceResponse<Rating>> AddRating(Rating rating);
+        Task<ServiceResponse<List<Rating>>> AddRating(List<Rating> rating);
         Task<ServiceResponse<Rating>> UpdateRating(Rating rating);
         Task<ServiceResponse<Rating>> DeleteRating(string ratingId);
         Task<ServiceResponse<Rating>> GetRatingById(string ratingId);

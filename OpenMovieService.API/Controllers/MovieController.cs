@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OpenMovieService.Infrastructure.Services;
+using OpenMovieService.Domain.Model;
+using OpenMovieService.Infrastructure.Repositories;
 
 namespace OpenMovieService.API.Controllers
 {
@@ -7,43 +8,114 @@ namespace OpenMovieService.API.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IOMDbService _omDbService;
-        public MovieController(IOMDbService omDbService)
+       private readonly IMovieRepository _movieRepository;
+        public MovieController(IMovieRepository movieRepository)
         {
-            _omDbService = omDbService ?? throw new ArgumentNullException(nameof(omDbService));
+          _movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
         }
 
-        [HttpGet("Id/{movieId}")]
+        [HttpPost("AddMovie")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        public async Task<IActionResult> AddMovie([FromBody] Movie movie)
+        {
+            if (movie == null)
+            {
+                return BadRequest("Movie cannot be null");
+            }
+            var response = await _movieRepository.AddMovie(movie);
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
+        [HttpPut("UpdateMovie")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        public async Task<IActionResult> UpdateMovie([FromBody] Movie movie)
+        {
+            if (movie == null)
+            {
+                return BadRequest("Movie cannot be null");
+            }
+            var response = await _movieRepository.UpdateMovie(movie);
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
+        [HttpDelete("DeleteMovie/{movieId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        public async Task<IActionResult> DeleteMovie(string movieId)
+        {
+            if (string.IsNullOrEmpty(movieId))
+            {
+                return BadRequest("Movie ID cannot be null or empty");
+            }
+            var response = await _movieRepository.DeleteMovie(movieId);
+            if (response.Success)
+            {
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
+        [HttpGet("GetMovieById/{movieId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         public async Task<IActionResult> GetMovieById(string movieId)
         {
-            try
+            if (string.IsNullOrEmpty(movieId))
             {
-                var movie = await _omDbService.GetMovieById(movieId);
-                return Ok(movie);
+                return BadRequest("Movie ID cannot be null or empty");
             }
-            catch (NullReferenceException ex)
+            var response = await _movieRepository.GetMovieById(movieId);
+            if (response.Success)
             {
-                return BadRequest(ex.Message);
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(response.Message);
             }
         }
 
-        [HttpGet("Title/{name}")]
+        [HttpGet("GetMovieByTitle/{name}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         public async Task<IActionResult> GetMovieByTitle(string name)
         {
-            try
+            if (string.IsNullOrEmpty(name))
             {
-                var movie = await _omDbService.GetMovieByTitle(name);
-                return Ok(movie);
+                return BadRequest("Movie name cannot be null or empty");
             }
-            catch (NullReferenceException ex)
+            var response = await _movieRepository.GetMovieByTitle(name);
+            if (response.Success)
             {
-                return BadRequest(ex.Message);
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest(response.Message);
             }
         }
 

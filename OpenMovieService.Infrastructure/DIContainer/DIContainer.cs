@@ -2,6 +2,8 @@
 using OpenMovieService.Infrastructure.Services;
 using OpenMovieService.Infrastructure.Helpers;
 using System.Net.Http;
+using OpenMovieService.Infrastructure.Mappers.Movies;
+using OpenMovieService.Infrastructure.Repositories;
 
 namespace OpenMovieService.Infrastructure.DIContainer
 {
@@ -12,6 +14,9 @@ namespace OpenMovieService.Infrastructure.DIContainer
             // Register your services here
             container.Register<IOMDbService, OMDbService>(Lifestyle.Scoped);
             container.Register<IHttpHelper, HttpHelper>(Lifestyle.Scoped);
+            container.Register<IMovieMapper, MoviesMapper>(Lifestyle.Scoped);
+            container.Register<IMovieRepository, MovieRepository>(Lifestyle.Scoped);
+            container.Register<IRatingRepository, RatingRepository>(Lifestyle.Scoped);
         }
     }
 }

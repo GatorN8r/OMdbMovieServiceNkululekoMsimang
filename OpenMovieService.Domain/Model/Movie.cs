@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenMovieService.Domain.Model
+﻿namespace OpenMovieService.Domain.Model
 {
-
     public class Movie
     {
         public string Title { get; set; }
@@ -23,7 +16,7 @@ namespace OpenMovieService.Domain.Model
         public string Country { get; set; }
         public string Awards { get; set; }
         public string Poster { get; set; }
-        public Rating[] Ratings { get; set; }
+        public List<Rating> Ratings { get; set; }
         public string Metascore { get; set; }
         public string imdbRating { get; set; }
         public string imdbVotes { get; set; }

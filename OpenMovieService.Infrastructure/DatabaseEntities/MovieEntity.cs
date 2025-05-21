@@ -1,6 +1,5 @@
-﻿using OpenMovieService.Domain.Model;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace OpenMovieService.Infrastructure.DatabaseEntities
 {
@@ -25,7 +24,7 @@ namespace OpenMovieService.Infrastructure.DatabaseEntities
         public string Country { get; set; }
         public string Awards { get; set; }
         public string Poster { get; set; }
-        public Rating[] Ratings { get; set; }
+        public List<RatingEntity> Ratings { get; set; }
         public string Metascore { get; set; }
         public string imdbRating { get; set; }
         public string imdbVotes { get; set; }
