@@ -23,7 +23,7 @@ namespace OpenMovieService.Infrastructure.Helpers
 
         public async Task<string> GetBaseUrl(string baseUrl, string endpoint)
         {
-            return await Task.FromResult($"{baseUrl}/{endpoint}");
+            return await Task.FromResult($"{baseUrl}/?{endpoint}");
         }
 
         public async Task<string> GetQueryString(Dictionary<string, string> parameters)

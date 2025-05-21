@@ -12,6 +12,8 @@ namespace OpenMovieService.Infrastructure.Services
 {
     public class OMDbService : IOMDbService
     {
+        private const string BASEURL = "AppSettings:OMDbBaseUrl";
+        private const string APIKEY = "AppSettings:OMDbMovieKey";
         private readonly IHttpHelper _httpHelper;
         private readonly IConfiguration _configuration;
 
@@ -23,7 +25,7 @@ namespace OpenMovieService.Infrastructure.Services
 
         public async Task<Movie> GetMovieById(string id)
         {
-            var url = await DIContainer.DIContainer._container.GetInstance<IHttpHelper>().GetBaseUrl(_configuration["AppSettings:OMDbBaseUrl"], $"i={id}&apikey={_configuration["AppSettings:OMDbMovieKey"]}");
+            var url = await _httpHelper.GetBaseUrl(_configuration[BASEURL], $"i={id}&apikey={_configuration[APIKEY]}");
             var response = await _httpHelper.GetFromJsonAsync<Movie>(url);
 
             if (response != null && response.Response == "True")
@@ -38,7 +40,7 @@ namespace OpenMovieService.Infrastructure.Services
 
         public async Task<Movie> GetMovieByTitle(string name)
         {
-            var url = await DIContainer.DIContainer._container.GetInstance<IHttpHelper>().GetBaseUrl(_configuration["AppSettings:OMDbBaseUrl"], $"t={name}&apikey={_configuration["AppSettings:OMDbMovieKey"]}");
+            var url = await _httpHelper.GetBaseUrl(_configuration[BASEURL], $"t={name}&apikey={_configuration[APIKEY]}");
             var response =  await _httpHelper.GetFromJsonAsync<Movie>(url);
             
             if (response != null && response.Response == "True")
