@@ -7,7 +7,6 @@ namespace OpenMovieService.Infrastructure.DatabaseEntities
     public class RatingEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SortNumber { get; set; }
         [ForeignKey("MovieId")]
         public MovieEntity Movie { get; set; }

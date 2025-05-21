@@ -8,7 +8,6 @@ namespace OpenMovieService.Infrastructure.DatabaseEntities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SortNumber { get; set; }
         public string Title { get; set; }
         public string Year { get; set; }

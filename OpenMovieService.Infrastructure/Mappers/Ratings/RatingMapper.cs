@@ -3,7 +3,7 @@ using OpenMovieService.Infrastructure.DatabaseEntities;
 
 namespace OpenMovieService.Infrastructure.Mappers.Ratings
 {
-    public class RatingMapper
+    public class RatingMapper : IRatingMapper
     {
         public async Task<List<RatingEntity>> MapToEntity(List<Rating> ratings, Guid movieId)
         {

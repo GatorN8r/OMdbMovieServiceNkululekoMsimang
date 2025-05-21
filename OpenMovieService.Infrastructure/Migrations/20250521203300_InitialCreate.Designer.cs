@@ -12,8 +12,8 @@ using OpenMovieService.Infrastructure.Data;
 namespace OpenMovieService.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250521192627_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250521203300_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,10 +96,7 @@ namespace OpenMovieService.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("SortNumber")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("SortNumber"));
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -157,10 +154,7 @@ namespace OpenMovieService.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<int>("SortNumber")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("SortNumber"));
 
                     b.Property<string>("Source")
                         .IsRequired()

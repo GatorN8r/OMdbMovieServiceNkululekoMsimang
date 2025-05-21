@@ -4,6 +4,7 @@ using OpenMovieService.Infrastructure.Helpers;
 using System.Net.Http;
 using OpenMovieService.Infrastructure.Mappers.Movies;
 using OpenMovieService.Infrastructure.Repositories;
+using OpenMovieService.Infrastructure.Mappers.Ratings;
 
 namespace OpenMovieService.Infrastructure.DIContainer
 {
@@ -16,7 +17,9 @@ namespace OpenMovieService.Infrastructure.DIContainer
             container.Register<IHttpHelper, HttpHelper>(Lifestyle.Scoped);
             container.Register<IMovieMapper, MoviesMapper>(Lifestyle.Scoped);
             container.Register<IMovieRepository, MovieRepository>(Lifestyle.Scoped);
+            container.Register<IRatingMapper, RatingMapper>(Lifestyle.Scoped);
             container.Register<IRatingRepository, RatingRepository>(Lifestyle.Scoped);
+
         }
     }
 }
