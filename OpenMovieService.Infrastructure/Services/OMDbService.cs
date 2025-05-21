@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace OpenMovieService.Infrastructure.Services
 {
@@ -20,22 +21,34 @@ namespace OpenMovieService.Infrastructure.Services
          _configuration = configuration;
         }
 
-        public Task<Movie> GetMovieById(string id)
+        public async Task<Movie> GetMovieById(string id)
         {
-            throw new NotImplementedException();
-        }
+            var url = await DIContainer.DIContainer._container.GetInstance<IHttpHelper>().GetBaseUrl(_configuration["AppSettings:OMDbBaseUrl"], $"i={id}&apikey={_configuration["AppSettings:OMDbMovieKey"]}");
+            var response = await _httpHelper.GetFromJsonAsync<Movie>(url);
 
-        public Task<Movie> GetMovieByTitle(string name)
-        {
-            throw new NotImplementedException();
+            if (response != null && response.Response == "True")
+            {
+                return response;
+            }
+            else
+            {
+                throw new NullReferenceException("Movie not found");
+            }
         }
 
         public async Task<Movie> GetMovieByTitle(string name)
         {
-            string DIHttp = await DIContainer.DIContainer._container.GetInstance<IHttpHelper>().GetBaseUrl(_configuration["AppSettings:OMDbBaseUrl"], $"t= {name}&apikey={_configuration["AppSettings:OMDbMovieKey"]}");
-            var url = await DIHttp.
-            var response = await _httpClient.GetAsync(url);
+            var url = await DIContainer.DIContainer._container.GetInstance<IHttpHelper>().GetBaseUrl(_configuration["AppSettings:OMDbBaseUrl"], $"t={name}&apikey={_configuration["AppSettings:OMDbMovieKey"]}");
+            var response =  await _httpHelper.GetFromJsonAsync<Movie>(url);
+            
+            if (response != null && response.Response == "True")
+            {
+                return response;
+            }
+            else
+            {
+                throw new NullReferenceException("Movie not found");
+            }
         }
-
     }
 }

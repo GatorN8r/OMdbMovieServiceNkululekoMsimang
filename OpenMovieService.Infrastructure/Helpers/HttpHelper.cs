@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,22 +15,29 @@ namespace OpenMovieService.Infrastructure.Helpers
             _httpClient = httpClient;
         }
 
-        public Task<string> BuildUrl(string baseUrl, string endpoint, Dictionary<string, string> parameters)
+        public async Task<string> BuildUrl(string baseUrl, string endpoint, Dictionary<string, string> parameters)
         {
             var queryString = GetQueryString(parameters);
-            return Task.FromResult($"{GetBaseUrl(baseUrl, endpoint)}?{queryString}");
+            return await Task.FromResult($"{GetBaseUrl(baseUrl, endpoint)}?{queryString}");
         }
 
-        public Task<string> GetBaseUrl(string baseUrl, string endpoint)
+        public async Task<string> GetBaseUrl(string baseUrl, string endpoint)
         {
-            return Task.FromResult($"{baseUrl}/{endpoint}");
+            return await Task.FromResult($"{baseUrl}/{endpoint}");
         }
 
-        public Task<string> GetQueryString(Dictionary<string, string> parameters)
+        public async Task<string> GetQueryString(Dictionary<string, string> parameters)
         {
-            return Task.FromResult(string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}")));
+            return await Task.FromResult(string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}")));
         }
 
-
+        public async Task<HttpResponseMessage> PostAsJsonAsync<T>(string url, T data)
+        {
+            return await _httpClient.PostAsJsonAsync(url, data);
+        }
+        public async Task<T> GetFromJsonAsync<T>(string url)
+        {
+            return await _httpClient.GetFromJsonAsync<T>(url);  
+        }
     }
 }

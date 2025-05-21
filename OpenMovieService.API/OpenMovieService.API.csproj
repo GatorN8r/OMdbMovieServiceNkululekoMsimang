@@ -8,7 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
+    <PackageReference Include="SimpleInjector" Version="5.5.0" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="5.5.0" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="5.5.0" />
+    <PackageReference Include="SimpleInjector.Integration.ServiceCollection" Version="5.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenMovieService.Infrastructure\OpenMovieService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

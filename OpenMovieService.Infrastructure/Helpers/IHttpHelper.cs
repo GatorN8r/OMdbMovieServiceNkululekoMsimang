@@ -11,5 +11,7 @@ namespace OpenMovieService.Infrastructure.Helpers
         Task<string> GetBaseUrl(string baseUrl, string endpoint);
         Task<string> GetQueryString(Dictionary<string, string> parameters);
         Task<string> BuildUrl(string baseUrl, string endpoint, Dictionary<string, string> parameters);
+        Task<HttpResponseMessage> PostAsJsonAsync<T>(string url, T data);
+        Task<T> GetFromJsonAsync<T>(string url);
     }
 }

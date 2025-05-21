@@ -1,6 +1,6 @@
 ﻿using SimpleInjector;
 using OpenMovieService.Infrastructure.Services;
-
+using OpenMovieService.Infrastructure.Helpers;
 namespace OpenMovieService.Infrastructure.DIContainer
 {
     public static class DIContainer
@@ -16,7 +16,8 @@ namespace OpenMovieService.Infrastructure.DIContainer
         private static void RegisterServices(Container container)
         {
             // Register your services here
-             container.Register<IOMDbService, OMDbService>();
+             container.Register<IOMDbService, OMDbService>(Lifestyle.Scoped);
+             container.Register<IHttpHelper, HttpHelper>(Lifestyle.Scoped);
 
             container.Verify(); // Verify the container configuration
         }
