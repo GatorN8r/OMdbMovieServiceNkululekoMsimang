@@ -19,6 +19,7 @@ namespace OpenMovieService.Infrastructure.DIContainer
             container.Register<IMovieRepository, MovieRepository>(Lifestyle.Scoped);
             container.Register<IRatingMapper, RatingMapper>(Lifestyle.Scoped);
             container.Register<IRatingRepository, RatingRepository>(Lifestyle.Scoped);
+            container.Register<ICacheService, CacheService>(Lifestyle.Scoped);
 
         }
     }

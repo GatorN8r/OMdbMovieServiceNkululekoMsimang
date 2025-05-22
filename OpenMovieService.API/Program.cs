@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using OpenMovieService.Infrastructure;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using OpenMovieService.Infrastructure.Data;
+using OpenMovieService.Infrastructure.DatabaseEntities;
 using OpenMovieService.Infrastructure.DIContainer;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 var container = new Container();
 container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(opt =>
+    opt.Select().Filter().OrderBy().Expand().Count().SetMaxTop(100)
+        .AddRouteComponents("api", GetEdmModel()));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMvcCore();
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
+
 
 builder.Services.AddSimpleInjector(container, options =>
 {
@@ -55,3 +62,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+IEdmModel GetEdmModel()
+{
+    var builder = new ODataConventionModelBuilder();
+    builder.EntitySet<CachedEntryEntity>("CachedEntries");
+    return builder.GetEdmModel();
+}

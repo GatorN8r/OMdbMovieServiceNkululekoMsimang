@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OpenMovieService.Infrastructure.DatabaseEntities;
+using OpenMovieService.Infrastructure.Services;
 
 namespace OpenMovieService.Infrastructure.Data
 {
@@ -16,6 +17,7 @@ namespace OpenMovieService.Infrastructure.Data
 
         public DbSet<MovieEntity> Movies { get; set; } = null!;
         public DbSet<RatingEntity> Ratings { get; set; } = null!;
+        public DbSet<CachedEntryEntity> CachedEntries { get; set; } = null!;
 
         public void configureMoviesEntity(ModelBuilder modelBuilder)
         {
