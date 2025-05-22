@@ -17,7 +17,7 @@ container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
 builder.Services.AddControllers().AddOData(opt =>
     opt.Select().Filter().OrderBy().Expand().Count().SetMaxTop(100)
-        .AddRouteComponents("api", GetEdmModel()));
+        .AddRouteComponents("odata", GetEdmModel()));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -54,8 +54,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

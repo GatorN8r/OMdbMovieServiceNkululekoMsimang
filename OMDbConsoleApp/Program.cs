@@ -12,11 +12,12 @@ namespace OMDbConsoleApp
         static async Task Main(string[] args)
         {
             var program = new Program();
+            var movie = new Movie();
 
             DisplayWelcomeMessage();
             DisplayMenu();
             int choice = GetUserChoice();
-            await program.ExecuteUserOption(choice);
+            await program.ExecuteUserOption(choice, movie);
             Console.ReadKey();
         }
 
@@ -32,9 +33,8 @@ namespace OMDbConsoleApp
             Console.WriteLine("2. Update Movie");
             Console.WriteLine("3. Delete Movie");
             Console.WriteLine("4. Search Movie by Title");
-            Console.WriteLine("5. Search Movie by Year");
-            Console.WriteLine("6. Search Movie by ID");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("5. Search Movie by ID");
+            Console.WriteLine("6. Exit");
         }
 
         public static int GetUserChoice()
@@ -65,7 +65,7 @@ namespace OMDbConsoleApp
             Console.WriteLine("---!!!Thank you for using Open Movie Console App..!!!----");
         }
 
-        public async Task ExecuteUserOption(int choice)
+        public async Task ExecuteUserOption(int choice, Movie movie)
         {
             switch (choice)
             {
@@ -79,14 +79,13 @@ namespace OMDbConsoleApp
                     break;
                 case 3:
                     // Delete Movie logic here
+                    await RemoveMovieById(movie.imdbID);
                     break;
                 case 4:
                     // Search Movie by Title logic here
+                    await GetMovieByTitle(movie.Title); 
                     break;
                 case 5:
-                    // Search Movie by Year logic here
-                    break;
-                case 6:
                     // Search Movie by ID logic here
                     Console.Write("Enter Movie ID: ");
                     string id = Console.ReadLine();
@@ -230,6 +229,52 @@ namespace OMDbConsoleApp
                 Console.WriteLine("Failed to retrieve movie.");
                 return null; 
             }
+        }
+
+        public async Task<Movie> GetMovieByTitle(string Title) { 
+
+            string url = $"{BaseUrl}api/OpenMovieDb/Title/{Title}";
+            var response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Retrieved successfully.");
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var json = await response.Content.ReadAsStringAsync();
+                var movie = JsonSerializer.Deserialize<Movie>(json, options);
+                if (movie == null)
+                {
+                    Console.WriteLine("Movie not found.");
+                    return null;
+                }
+                Console.WriteLine($"Movie found:\n{movie.ToString()}");
+                return movie;
+            }
+            else
+            {
+                Console.WriteLine("Failed to retrieve movie.");
+                return null;
+            }
+
+        }
+
+        public async Task<string> RemoveMovieById(string Id) { 
+        
+            var url = $"{BaseUrl}api/OpenMovieDb/Id/{Id}";
+            var response = await _httpClient.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Movie deleted successfully.");
+                return "Movie deleted successfully.";
+            }
+            else
+            {
+                Console.WriteLine("Failed to delete movie.");
+                return "Failed to delete movie.";
+            }
+
         }
 
     }
