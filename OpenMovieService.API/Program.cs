@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore; // Add this using directive for EF Core MySQL support
+using Microsoft.EntityFrameworkCore;
 using OpenMovieService.Infrastructure;
 using OpenMovieService.Infrastructure.Data;
 using OpenMovieService.Infrastructure.DIContainer;
@@ -29,20 +29,17 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     new MySqlServerVersion(new Version(8, 0, 21))));
 
+// Register IHttpClientFactory directly in the DI container
+builder.Services.AddScoped<IHttpClientFactory>(sp => sp.GetRequiredService<IHttpClientFactory>());
+
 var app = builder.Build();
 
 // Use the correct overload explicitly to resolve ambiguity
 ((IApplicationBuilder)app).UseSimpleInjector(container);
 DIContainer.RegisterServices(container);
 
-container.Register<IHttpClientFactory>(() =>
-    builder.Services.BuildServiceProvider().GetRequiredService<IHttpClientFactory>(),
-    Lifestyle.Singleton);
-
-container.Register<HttpClient>(() =>
-    container.GetInstance<IHttpClientFactory>().CreateClient(),
-    Lifestyle.Scoped);
-
+// Use IHttpClientFactory from the container without calling BuildServiceProvider
+container.Register(() => container.GetInstance<IHttpClientFactory>().CreateClient(), Lifestyle.Scoped);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
